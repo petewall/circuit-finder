@@ -23,6 +23,7 @@ const String ssid = "Planet Express";
 const String passphrase = "w1r3l3ss";
 void setupWifi() {
   Serial.printf("Connecting to %s", ssid.c_str());
+  WiFi.hostname("circuit-finder");
   WiFi.begin(ssid, passphrase);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
