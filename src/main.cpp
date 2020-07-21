@@ -1,6 +1,7 @@
 // Copyright 2019 Pete Wall <pete@petewall.net>
 
 #include <Arduino.h>
+#include <Blinker.h>
 #include <ESP8266WiFi.h>
 #include <ESPAsyncWebServer.h>
 #include <LittleFS.h>
@@ -46,6 +47,18 @@ void serveFavicon(AsyncWebServerRequest *request) {
   request->send(LittleFS, "/favicon.ico", "image/x-icon");
 }
 
+void serveLightBulbOff(AsyncWebServerRequest *request) {
+  IPAddress remote_ip = request->client()->remoteIP();
+  Serial.println("[" + remote_ip.toString() + "] HTTP GET request of " + request->url());
+  request->send(LittleFS, "/off.png", "image/png");
+}
+
+void serveLightBulbOn(AsyncWebServerRequest *request) {
+  IPAddress remote_ip = request->client()->remoteIP();
+  Serial.println("[" + remote_ip.toString() + "] HTTP GET request of " + request->url());
+  request->send(LittleFS, "/on.png", "image/png");
+}
+
 void serveSocketScript(AsyncWebServerRequest *request) {
   IPAddress remote_ip = request->client()->remoteIP();
   Serial.println("[" + remote_ip.toString() + "] HTTP GET request of " + request->url());
@@ -67,6 +80,8 @@ void serve404(AsyncWebServerRequest *request) {
 void setupWebServer() {
   server.on("/", HTTP_GET, serveIndex);
   server.on("/favicon.ico", HTTP_GET, serveFavicon);
+  server.on("/off.png", HTTP_GET, serveLightBulbOff);
+  server.on("/on.png", HTTP_GET, serveLightBulbOn);
   server.on("/socket.js", HTTP_GET, serveSocketScript);
   server.on("/style.css", HTTP_GET, serveStylesheet);
   server.onNotFound(serve404);
@@ -100,7 +115,10 @@ void setupWebSocketServer() {
   Serial.println("Done");
 }
 
+Blinker* blinker;
 void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+  blinker = new Blinker(500);
   Serial.begin(115200);
   Serial.println();
   setupFileSystem();
@@ -111,4 +129,6 @@ void setup() {
 
 void loop() {
   socket.loop();
+  unsigned long now = millis();
+  blinker->check(now);
 }

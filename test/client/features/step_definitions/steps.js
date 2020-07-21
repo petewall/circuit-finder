@@ -56,17 +56,15 @@ When('the power is turned off', function () {
 When('the power is turned back on', startCircuitFinderService)
 
 Then('the page shows the power is on', async function () {
-    const state = await this.driver.findElement(By.id('state'))
-    await this.driver.wait(until.elementTextIs(state, 'ON'))
-
     const body = await this.driver.findElement(By.tagName('body'))
-    expect(await body.getAttribute('class')).to.equal('connected')
+    await this.driver.wait(() => {
+        return body.getAttribute('class').then(classes => classes === 'connected')
+    }, 1000)
 })
 
 Then('the page shows the power is off', async function () {
-    const state = await this.driver.findElement(By.id('state'))
-    await this.driver.wait(until.elementTextIs(state, 'OFF'))
-  
     const body = await this.driver.findElement(By.tagName('body'))
-    expect(await body.getAttribute('class')).to.equal('')
+    await this.driver.wait(() => {
+        return body.getAttribute('class').then(classes => classes === '')
+    }, 1000)
 })

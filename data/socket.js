@@ -20,13 +20,11 @@ function startHeartbeat() {
 }
 
 function connected() {
-  $('#state').text('ON')
   $('body').addClass('connected')
   startHeartbeat()
 }
 
 function disconnected() {
-  $('#state').text('OFF')
   $('body').removeClass('connected')
   clearInterval(heartbeatTimeout)
 }

@@ -11,14 +11,21 @@ body.connected {
 
 body div {
     background-color: pink;
+    background-image: url("/off.png");
+    background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;
     border-color: red;
     border-style: outset;
     border-width: 5px;
-    padding: 2em;
-    text-align: center;
+    max-width: 80%;
+    max-height: 80%;
+    width: 80vh;
+    height: 80vw;
 }
 
 body.connected div {
     background-color: lightgreen;
+    background-image: url("/on.png");
     border-color: green;
 }
