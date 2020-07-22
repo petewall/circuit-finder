@@ -60,6 +60,8 @@ Then('the page shows the power is on', async function () {
     await this.driver.wait(() => {
         return body.getAttribute('class').then(classes => classes === 'connected')
     }, 1000)
+
+    expect(await this.driver.getTitle()).to.equal('Circuit Finder: On')
 })
 
 Then('the page shows the power is off', async function () {
@@ -67,4 +69,6 @@ Then('the page shows the power is off', async function () {
     await this.driver.wait(() => {
         return body.getAttribute('class').then(classes => classes === '')
     }, 1000)
+
+    expect(await this.driver.getTitle()).to.equal('Circuit Finder: Off')
 })

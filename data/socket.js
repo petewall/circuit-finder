@@ -21,11 +21,13 @@ function startHeartbeat() {
 
 function connected() {
   $('body').addClass('connected')
+  $(document).prop('title', 'Circuit Finder: On')
   startHeartbeat()
 }
 
 function disconnected() {
   $('body').removeClass('connected')
+  $(document).prop('title', 'Circuit Finder: Off')
   clearInterval(heartbeatTimeout)
 }
 
